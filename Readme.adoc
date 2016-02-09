@@ -1,0 +1,16 @@
+= Katrin
+
+Tool to mine social network data like friendships or interests. Supports facebook so far.
+
+== Modules
+
+* Each social network is handled by _Miner_ (e.g. _FacebookMiner_)
+* Each _Miner_ accepts _userid_ (name or email, depends on _Miner_), for who the information should be mined
+* Each _Miner_ has his own configuration, which tells, what should be mined or authentication data (if miner has to authenticate itself).
+* Output graphs from **all** Miners is saved in **one** neo4j database. It gives us the possiblity to easily combine analyse of
+e.g. twitter and facebook for the same person. TBD: how to map same person from different sources to one node?
+
+== Quick start
+* rename `run/katrin.default.ini` to `run/katrin.ini`
+* Set your facebook username and password in the file (and neo4j DB URI).
+* Execute `facebook_mining_example.py $uidOfUserToMine`
