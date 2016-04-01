@@ -2,3 +2,4 @@
 Readme.html
 __pycache__
 run/katrin.ini
+scripts/compose/docker-compose.yml
