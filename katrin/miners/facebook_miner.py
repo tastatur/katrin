@@ -84,7 +84,7 @@ class FacebookFriendsMiner(Miner):
             self.mine_friends(friend, current_depth + 1, http_browser)
 
     def login(self):
-        browser = mechanicalsoup.Browser()
+        browser = mechanicalsoup.Browser(soup_config={"features": "lxml"})
         browser.session.headers["User-Agent"] = self.miner_config.user_agent
         login_page = browser.get("https://m.facebook.com/")
         login_form = login_page.soup.select(".mobile-login-form")[0]

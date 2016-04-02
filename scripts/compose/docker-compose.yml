@@ -1,0 +1,14 @@
+version: '2'
+services:
+  neo4j:
+    image: neo4j
+    env_file: facebookminer.env
+    ports:
+      - "7474:7474"
+  facebookminer:
+    image: facebookminer
+    env_file: facebookminer.env
+    links:
+      - neo4j
+    depends_on:
+      - neo4j

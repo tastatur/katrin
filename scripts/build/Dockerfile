@@ -6,8 +6,8 @@ RUN apt-get -y install python3 python3-pip
 
 RUN pip3 install mechanicalsoup py2neo
 
-ADD ../../run /
-ADD ../../katrin /
-ADD start.sh /
+ADD tmp/run /miner/run
+ADD tmp/katrin /miner/katrin
+ADD start.sh /miner/
 
-ENTRYPOINT ["/bin/bash", "/start.sh"]
+ENTRYPOINT ["/bin/bash", "/miner/start.sh"]
