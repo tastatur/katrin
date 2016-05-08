@@ -6,7 +6,7 @@ from katrin.dao.human import NormalHuman
 from katrin.dao.neo4j import NormalHumanStore
 from katrin.miners.abstract_miner import Miner, MinerConfig
 
-from katrin.parsers.facebook_parser import FacebookFriendsParser
+from katrin.parsers.facebook_parser import FacebookFriendsParser, get_number_of_friends
 
 
 class FacebookFriendsMinerConfig(MinerConfig):
@@ -56,7 +56,7 @@ class FacebookFriendsMinerConfig(MinerConfig):
         return self._human_store
 
 
-class FacebookFriendsMiner(Miner):
+class FacebookMiner(Miner):
     def __init__(self, miner_config):
         super().__init__(miner_config)
         self._friends_parser = FacebookFriendsParser()
@@ -73,8 +73,11 @@ class FacebookFriendsMiner(Miner):
             return
 
         friend_list_url = "https://m.facebook.com/" + suspect.uid + '/friends'
-        unparsed_friends = http_browser.get(friend_list_url)
-        parsed_friends = self._friends_parser.parse(unparsed_friends)
+        # We need this for pagination
+        suspect_home = http_browser.get(friend_list_url)
+        number_of_friends = get_number_of_friends(suspect_home)
+
+        parsed_friends = self._friends_parser.parse(friend_list_url, number_of_friends, http_browser, self.miner_config.request_delay)
         suspect.friends = parsed_friends
         self.update_suspect(suspect)
         print("Targets found: {}" .format(len(parsed_friends)))
